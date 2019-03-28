@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Auth from './containers/Auth/Auth';
 import Selection from './containers/Selection/Selection';
 import Choices from './containers/Choices/Choices';
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import BackOffice from './containers/BackOffice/BackOffice';
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 import Layout from './HOC/Layout/Layout';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
           <Route path="/auth" component={Auth}/>
           <Route path="/selection" component={Selection}/>
           <Route path="/choices" component={Choices}/>
+          <Route path="/back" component={BackOffice}/>
         </Switch>  
       </Layout>  
     </BrowserRouter>

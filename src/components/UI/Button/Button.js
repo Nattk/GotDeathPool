@@ -4,7 +4,7 @@ import Classes from './Button.css';
 
 const button = (props)=>(
     <Aux>
-        <button className={Classes.Button} type="props.type">{props.name}</button>
+        <button className={Classes.Button} onClick={props.clicked}>{props.name}</button>
     </Aux>
 );
 
