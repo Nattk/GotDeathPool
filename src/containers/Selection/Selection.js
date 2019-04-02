@@ -14,10 +14,30 @@ class Selection extends Component {
     }
 
     componentWillMount(){
-        axios.get('https://gotpool-83470.firebaseio.com/characters.json').then(char =>{
+        const localUser = localStorage.getItem('userId');
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'/choice.json',{cancelToken: source.token})
+        .then((choice)=>{
+        if(choice){
+            source.cancel('Redirection.');
+            this.props.history.push('/choices');
+        }
+        else{
+            return axios.get('https://gotpool-83470.firebaseio.com/characters.json')
+        }
+        })
+        .then(char => {
             this.setState({characters : char.data, isLoaded: true});
-        }).catch(error=>{
-            alert(error.message);
+        })
+        .catch(error=>{
+            if(axios.isCancel(error)){
+                console.log(error);
+            }
+            else{
+                console.log(error.message);
+            }
         })
     }
 
@@ -31,7 +51,7 @@ class Selection extends Component {
         event.preventDefault();
         const userChoices = this.state.characters;
         const userId = localStorage.getItem('userId');
-        const payload = {choices:userChoices};
+        const payload = {choices:userChoices,choice:true};
         axios.patch('https://gotpool-83470.firebaseio.com/users/'+userId+'.json?', payload).then( response =>{
             this.props.history('/choices');
         }).catch(error=>{
@@ -46,7 +66,7 @@ class Selection extends Component {
             selection = (
                <Aux> 
                     {this.state.characters.map((char,index) =>(
-                        <Checkbox characterName={char.name} changed={(event)=>this.checkboxesHandler(event,index)}/>
+                        <Checkbox key={char.id} characterName={char.name} changed={(event)=>this.checkboxesHandler(event,index)}/>
                     ))}
                     <Button name="Submit" clicked={(event)=>this.submitHandler(event)}/>
                 </Aux>
@@ -57,7 +77,7 @@ class Selection extends Component {
            selection = <p>Loading...</p>;
         }
         else{
-            selection = <Redirect to="/signIn"/>;
+            selection = <Redirect to="/"/>;
         }
 
         return(

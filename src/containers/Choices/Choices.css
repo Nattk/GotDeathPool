@@ -5,13 +5,24 @@
 }
 
 .Titles{
-    width: 100%;
     color: white;
     background-color: darkslategrey;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
 } 
-.Titles p:nth-child(1){
+.Titles p{
+    width:33%;
+    text-align: center;
+}
+.Characters{
+    display: flex;
+    flex-direction: row;  
+}
+.Characters p{
+    width:33%;
+    text-align: center;
+}
+
+.Choices .Titles:nth-of-type(2) p{
     width:50%;
 }

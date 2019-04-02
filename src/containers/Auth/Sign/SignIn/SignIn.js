@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import Classes from './SignIn.css';
+import { Redirect } from 'react-router-dom';
 import Aux from '../../../../HOC/Auxiliary/Auxiliary';
 import Button from '../../../../components/UI/Button/Button';
 import Input from '../../../../components/UI/Input/Input';
@@ -49,16 +50,17 @@ class SignIn extends Component {
             localStorage.setItem("token", response.data.idToken);
             localStorage.setItem("expirationDate", expirationDate);
             localStorage.setItem("userId", response.data.localId);
-            this.props.history.push("/selection");
-
+            this.setState({connected: true});
         }).catch(error=>{
             alert(error.message);
         });
     }
 
     render(){
-        return(
-            <Aux>
+        let signIn = null;
+        if(!this.state.connected && !localStorage.getItem('token')){
+            signIn =(
+                <Aux>
                 <p>{this.state.signUp? "Sign Up":"Sign In"}</p>
                 <form>
                     <Input changed={(event)=>this.emailHandler(event)} type="email" placeholder="Email"/>
@@ -67,7 +69,12 @@ class SignIn extends Component {
                 </form>
                 {this.state.signUp ? <p>Already signed up ? <Button clicked={this.signHandler} name="Sign In"/></p> : <p>Already signed in ? sign up <Button clicked={this.signHandler} name="Sign up"/> </p>}
             </Aux>
-        );
+            );
+        }
+        else {
+            signIn = (<Redirect to="/selection"/>);
+        }
+        return(signIn);
     }
 }
 

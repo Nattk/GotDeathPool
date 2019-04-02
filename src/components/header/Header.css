@@ -1,0 +1,12 @@
+.Header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.Header p{
+    width:75%;
+}
+
+.Header div{
+    width:20%;
+}
