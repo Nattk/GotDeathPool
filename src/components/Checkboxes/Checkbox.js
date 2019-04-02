@@ -6,9 +6,9 @@ const checkbox = (props) =>(
     <Aux>
         <div className={Classes.Checkbox}>
             <p>{props.characterName}</p>
-            <input type="radio" id={props.characterName} name={props.characterName} value="Alive"/> 
-            <input type="radio" id={props.characterName} name={props.characterName} value="Dead"/> 
-            <input type="radio" id={props.characterName} name={props.characterName} value="Wight"/> 
+            <input type="radio" id={props.characterName} name={props.characterName} onChange={props.changed} value="Alive"/> 
+            <input type="radio" id={props.characterName} name={props.characterName} onChange={props.changed} value="Dead"/> 
+            <input type="radio" id={props.characterName} name={props.characterName} onChange={props.changed} value="Wight"/> 
         </div>
     </Aux>
 );

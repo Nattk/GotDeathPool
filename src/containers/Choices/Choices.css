@@ -1,0 +1,17 @@
+.Choices{
+    width:80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Titles{
+    width: 100%;
+    color: white;
+    background-color: darkslategrey;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+} 
+.Titles p:nth-child(1){
+    width:50%;
+}

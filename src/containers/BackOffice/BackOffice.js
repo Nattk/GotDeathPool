@@ -11,7 +11,7 @@ class BackOffice extends Component {
         status: null,
         isLoaded:false
     }
-
+    
     componentDidMount(){
         axios.get('https://gotpool-83470.firebaseio.com/characters.json').then(char =>{
             this.setState({characters: char.data});    
