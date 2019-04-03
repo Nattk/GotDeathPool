@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import Classes from './Header.css';
 
 const header = (props) => {
-    console.log(props.location);
     if(props.location.pathname === ("/")){
         return(
         <header className={Classes.Header}>

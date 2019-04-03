@@ -18,9 +18,10 @@ class Selection extends Component {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
-        axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'/choice.json',{cancelToken: source.token})
+        axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'.json',{cancelToken: source.token})
         .then((choice)=>{
         if(choice){
+            console.log(choice);
             source.cancel('Redirection.');
             this.props.history.push('/choices');
         }

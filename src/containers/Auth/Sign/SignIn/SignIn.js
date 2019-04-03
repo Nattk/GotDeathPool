@@ -13,7 +13,8 @@ class SignIn extends Component {
         email:null,
         password:null,
         connected: false,
-        valid:false,
+        emailValid: false,
+        passwordValid: false,
         signUp: false
     }
 
@@ -24,40 +25,39 @@ class SignIn extends Component {
     }
 
     checkValidity = (value, type) => {
-        let isValid = true
-        if(value !== "" && type === 'email' && new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)){
-            isValid = true;
+        if(value.trim() !== "" && type === 'email' && new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)){
+            return true;
         }
-        else{
-            isValid = false
+        else if(value.trim() !== "" && type === "password" && value.length >= 6){
+            return true;
         }
-        if(type == 'password' && value !== "" && value.length >= 6){
-            isValid = true
-        }
-        else{
-            isValid = false;
-        }
-        return isValid
+        return false
     };
 
-    inputHandler = (event) =>{
+    emailHandler = (event) =>{
         if(event.target.type === 'email'){
             this.setState({email : event.target.value});            
         }
+        if(this.checkValidity(event.target.value,event.target.type)){
+            this.setState({emailValid: true});
+        }
         else{
+            this.setState({emailValid: false});
+        }
+    }
+
+    passwordHandler = (event) =>{
+        if(event.target.type === 'password') {
             this.setState({password : event.target.value});
         } 
-        
         if(this.checkValidity(event.target.value,event.target.type)){
-            this.setState({valid: true});
+            this.setState({passwordValid: true});
         }
         else{
-            this.setState({valid: false});
-        }
+            this.setState({passwordValid: false});
+        }   
     }
-    passwordHandler = (event) =>{
-        this.setState({password : event.target.value});
-    }
+    
 
     sendHandler = (event) =>{
         event.preventDefault();
@@ -82,21 +82,27 @@ class SignIn extends Component {
             localStorage.setItem("userId", response.data.localId);
             this.setState({connected: true});
         }).catch(error=>{
-            alert(error.message);
+            console.log(error.code);
+            console.log(this.state);
         });
     }
 
     render(){
         let signIn = null;
+        let valid = null;
+        if(this.state.emailValid && this.state.passwordValid){
+            valid = true;
+        }
+
         if(!this.state.connected && !localStorage.getItem('token')){
             signIn = (
                 <Aux>
                     <section className={Classes.SignIn}>
                         <p>{this.state.signUp? "Sign Up":"Sign In"}</p>
                         <form className={Classes.Form}>
-                            <Input changed={(event)=>this.inputHandler(event)} type="email" placeholder="Email"/>
-                            <Input changed={(event)=>this.inputHandler(event)} type="password" placeholder="Password"/>
-                            <Button name="Submit" btnType="Success" disabled={this.state.valid} clicked={(event)=>this.sendHandler(event)}/>
+                            <Input changed={(event)=>this.emailHandler(event)} type="email" placeholder="Email"/>
+                            <Input changed={(event)=>this.passwordHandler(event)} type="password" placeholder="Password"/>
+                            <Button name="Submit" btnType="Success" disabled={valid} clicked={(event)=>this.sendHandler(event)}/>
                         </form>
                         {this.state.signUp ? <p>Already signed up ? Sign in <Button clicked={this.signHandler} disabled={true} name="Sign In"/></p> : <p>Already signed in ? sign up <Button clicked={this.signHandler} disabled={true} name="Sign up"/> </p>}
                     </section>
