@@ -12,6 +12,15 @@
     flex-direction: row;
     justify-content: space-around;
 } 
-.Titles p:nth-child(1){
-    width:50%;
+.Titles div{
+    width:45%;
+}
+
+.Titles div:nth-of-type(2) {
+    display: flex;
+    flex-direction: row;
+}
+.Titles div:nth-of-type(2) p{
+    width:33%;
+    text-align: center;
 }

@@ -13,7 +13,8 @@ class BackOffice extends Component {
     }
     
     componentDidMount(){
-        axios.get('https://gotpool-83470.firebaseio.com/characters.json').then(char =>{
+        const localUserToken = localStorage.getItem('token');
+        axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken).then(char =>{
             this.setState({characters: char.data});    
             this.setState({isLoaded: true});
         }).catch(error=>{   
@@ -35,9 +36,10 @@ class BackOffice extends Component {
         event.preventDefault();
         const index = this.state.index ;
         const status = this.state.status;
+        const localUserToken =  localStorage.getItem('token');
         console.log(status,index);
         const data = {"status":status};
-        axios.patch('https://gotpool-83470.firebaseio.com/characters/'+index+'/.json',data).then(response =>{
+        axios.patch('https://gotpool-83470.firebaseio.com/characters/'+index+'/.json?auth='+localUserToken, data).then(response =>{
             console.log(response);
         }).catch(error=>{
             console.log(error);

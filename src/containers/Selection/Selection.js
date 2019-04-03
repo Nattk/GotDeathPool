@@ -15,18 +15,19 @@ class Selection extends Component {
 
     componentWillMount(){
         const localUser = localStorage.getItem('userId');
+        const localUserToken = localStorage.getItem('token');
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
-        axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'.json',{cancelToken: source.token})
+        axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'.json?auth='+localUserToken,{cancelToken: source.token})
         .then((choice)=>{
-        if(choice){
+        if(choice.data){
             console.log(choice);
             source.cancel('Redirection.');
             this.props.history.push('/choices');
         }
         else{
-            return axios.get('https://gotpool-83470.firebaseio.com/characters.json')
+            return axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken)
         }
         })
         .then(char => {
@@ -50,10 +51,11 @@ class Selection extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
+        const localUserToken = localStorage.getItem('token');
         const userChoices = this.state.characters;
         const userId = localStorage.getItem('userId');
         const payload = {choices:userChoices,choice:true};
-        axios.patch('https://gotpool-83470.firebaseio.com/users/'+userId+'.json?', payload).then( response =>{
+        axios.patch('https://gotpool-83470.firebaseio.com/users/'+userId+'.json?=auth'+localUserToken, payload).then( response =>{
             this.props.history('/choices');
         }).catch(error=>{
             alert(error.message);  
@@ -69,7 +71,7 @@ class Selection extends Component {
                     {this.state.characters.map((char,index) =>(
                         <Checkbox key={char.id} characterName={char.name} changed={(event)=>this.checkboxesHandler(event,index)}/>
                     ))}
-                    <Button name="Submit" clicked={(event)=>this.submitHandler(event)}/>
+                    <Button name="Submit" btnType="Success" disabled={true} clicked={(event)=>this.submitHandler(event)}/>
                 </Aux>
             );
                  
@@ -84,12 +86,16 @@ class Selection extends Component {
         return(
             <Aux>
                 <section className={Classes.Selection}>
-                    <h1>GOT</h1>
+                    <h1>Select the destiny of the characters</h1>
                     <div className={Classes.Titles}>
-                        <p>Characters</p>
-                        <p>Alive</p>
-                        <p>Dead</p>
-                        <p>Become a wight</p>
+                        <div>                        
+                            <p>Characters</p>
+                        </div>
+                        <div>
+                            <p>Alive</p>
+                            <p>Dead</p>
+                            <p>Become a wight</p>
+                        </div>
                     </div>
                     {selection}
                 </section>

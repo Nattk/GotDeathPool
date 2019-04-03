@@ -11,10 +11,11 @@ class Choices extends Component {
     }
     componentWillMount(){
         const id = localStorage.getItem('userId');
-        axios.get('https://gotpool-83470.firebaseio.com/users/'+id+'/choices.json')
+        const localUserToken =  localStorage.getItem('token');
+        axios.get('https://gotpool-83470.firebaseio.com/users/'+id+'/choices.json?auth='+localUserToken)
         .then(choices =>{
             this.setState({choices : choices.data});
-            return axios.get('https://gotpool-83470.firebaseio.com/characters.json')
+            return axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken)
         })
         .then((characters)=>{
             this.setState({characters : characters.data, isLoaded: true});
