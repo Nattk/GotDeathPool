@@ -82,7 +82,6 @@ class SignIn extends Component {
             localStorage.setItem("userId", response.data.localId);
             this.setState({connected: true});
         }).catch(error=>{
-            console.log(error);
             alert(error.message);
         });
     }

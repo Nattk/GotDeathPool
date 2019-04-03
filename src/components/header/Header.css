@@ -2,11 +2,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-.Header p{
-    width:75%;
-}
-
-.Header div{
-    width:20%;
+    justify-content: space-between;
+    padding:0 10px 0 10px;
+    height: 50px;
+    background-color: dimgray;
+    color: white;
 }
