@@ -13,7 +13,8 @@ class SignIn extends Component {
         email:null,
         password:null,
         connected: false,
-        signUp: false,
+        valid:false,
+        signUp: false
     }
 
     signHandler = () => {
@@ -22,8 +23,37 @@ class SignIn extends Component {
         })
     }
 
-    emailHandler = (event) =>{
-        this.setState({email : event.target.value});
+    checkValidity = (value, type) => {
+        let isValid = true
+        if(value !== "" && type === 'email' && new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)){
+            isValid = true;
+        }
+        else{
+            isValid = false
+        }
+        if(type == 'password' && value !== "" && value.length >= 6){
+            isValid = true
+        }
+        else{
+            isValid = false;
+        }
+        return isValid
+    };
+
+    inputHandler = (event) =>{
+        if(event.target.type === 'email'){
+            this.setState({email : event.target.value});            
+        }
+        else{
+            this.setState({password : event.target.value});
+        } 
+        
+        if(this.checkValidity(event.target.value,event.target.type)){
+            this.setState({valid: true});
+        }
+        else{
+            this.setState({valid: false});
+        }
     }
     passwordHandler = (event) =>{
         this.setState({password : event.target.value});
@@ -52,6 +82,7 @@ class SignIn extends Component {
             localStorage.setItem("userId", response.data.localId);
             this.setState({connected: true});
         }).catch(error=>{
+            console.log(error);
             alert(error.message);
         });
     }
@@ -59,16 +90,18 @@ class SignIn extends Component {
     render(){
         let signIn = null;
         if(!this.state.connected && !localStorage.getItem('token')){
-            signIn =(
+            signIn = (
                 <Aux>
-                <p>{this.state.signUp? "Sign Up":"Sign In"}</p>
-                <form>
-                    <Input changed={(event)=>this.emailHandler(event)} type="email" placeholder="Email"/>
-                    <Input changed={(event)=>this.passwordHandler(event)} type="password" placeholder="Password"/>
-                    <Button name="Submit" clicked={(event)=>this.sendHandler(event)}/>
-                </form>
-                {this.state.signUp ? <p>Already signed up ? <Button clicked={this.signHandler} name="Sign In"/></p> : <p>Already signed in ? sign up <Button clicked={this.signHandler} name="Sign up"/> </p>}
-            </Aux>
+                    <section className={Classes.SignIn}>
+                        <p>{this.state.signUp? "Sign Up":"Sign In"}</p>
+                        <form className={Classes.Form}>
+                            <Input changed={(event)=>this.inputHandler(event)} type="email" placeholder="Email"/>
+                            <Input changed={(event)=>this.inputHandler(event)} type="password" placeholder="Password"/>
+                            <Button name="Submit" btnType="Success" disabled={this.state.valid} clicked={(event)=>this.sendHandler(event)}/>
+                        </form>
+                        {this.state.signUp ? <p>Already signed up ? Sign in <Button clicked={this.signHandler} disabled={true} name="Sign In"/></p> : <p>Already signed in ? sign up <Button clicked={this.signHandler} disabled={true} name="Sign up"/> </p>}
+                    </section>
+                </Aux>
             );
         }
         else {

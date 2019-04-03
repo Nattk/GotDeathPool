@@ -1,3 +1,8 @@
 .Input{
     
 }
+
+.Input .Invalid {
+    border: 1px solid red;
+    background-color: salmon;
+}

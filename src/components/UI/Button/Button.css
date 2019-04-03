@@ -1,3 +1,35 @@
-.Button{
-    color: black;
+button{
+    color: white;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+}
+button:hover{
+    cursor: pointer;
+}
+
+.Success {
+    background-color: green;
+    transition: all 0.3s ease-in 0.3s;
+  }
+
+.Success:hover{
+    background-color: #5c9210;;
+}
+
+.Neutral{
+    background-color:orangered;
+}
+
+
+.Danger {
+    background-color: #944317;
+}
+
+button:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+button:disabled:hover{
+    background-color: #ccc;
 }
