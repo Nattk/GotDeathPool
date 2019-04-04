@@ -3,6 +3,7 @@ import axios from 'axios';
 import Classes from './BackOffice.css';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class BackOffice extends Component {
     state = {
@@ -69,7 +70,7 @@ class BackOffice extends Component {
             );
         }
         else{
-            backInput = <p>Loading</p>
+            backInput = <Spinner/>
         }
         return(
             <Aux>

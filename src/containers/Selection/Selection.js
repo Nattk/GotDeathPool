@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 import Classes from './Selection.css';
 import Checkbox from '../../components/Checkboxes/Checkbox';
-import { Redirect } from 'react-router-dom';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import Button from '../../components/UI/Button/Button';
 
@@ -18,11 +18,10 @@ class Selection extends Component {
         const localUserToken = localStorage.getItem('token');
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
-
+        console.log(localUserToken);
         axios.get('https://gotpool-83470.firebaseio.com/users/'+localUser+'.json?auth='+localUserToken,{cancelToken: source.token})
         .then((choice)=>{
         if(choice.data){
-            console.log(choice);
             source.cancel('Redirection.');
             this.props.history.push('/choices');
         }
@@ -55,8 +54,8 @@ class Selection extends Component {
         const userChoices = this.state.characters;
         const userId = localStorage.getItem('userId');
         const payload = {choices:userChoices,choice:true};
-        axios.patch('https://gotpool-83470.firebaseio.com/users/'+userId+'.json?=auth'+localUserToken, payload).then( response =>{
-            this.props.history('/choices');
+        axios.patch('https://gotpool-83470.firebaseio.com/users/'+userId+'.json?auth='+localUserToken, payload).then( response =>{
+            this.props.push.history('/choices');
         }).catch(error=>{
             alert(error.message);  
         })
@@ -76,11 +75,8 @@ class Selection extends Component {
             );
                  
         }
-        else if(!this.state.isLoaded){
-           selection = <p>Loading...</p>;
-        }
         else{
-            selection = <Redirect to="/"/>;
+           selection = <Spinner/>
         }
 
         return(

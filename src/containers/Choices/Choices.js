@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import Classes from './Choices.css';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 
@@ -53,7 +54,7 @@ class Choices extends Component {
            points = this.updatePoints();
         }
         else{
-            choices = (<p>Loading...</p>)
+            choices = (<Spinner/>)
         }
         return(
             <Aux>
