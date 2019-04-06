@@ -34,28 +34,33 @@ export const getCharacters = (userId, token) => {
     dispatch(getCharactersStart());
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
+    console.log(userId,token);
     axios
       .get(
         "https://gotpool-83470.firebaseio.com/users/"+userId +".json?auth=" +token,
         { cancelToken: source.token }
       )
       .then(choice => {
+        console.log(choice);
         if (choice.data) {
           source.cancel("Redirection.");
         } else {
           return axios.get(
             "https://gotpool-83470.firebaseio.com/characters.json?auth=" +
-              userId
+              token
           );
         }
       })
       .then(char => {
+        console.log(char);
           dispatch(getCharactersSuccess(char.data))
       })
       .catch(error => {
         if (axios.isCancel(error)) {
+            console.log('cancel', error);
             dispatch(getCharactersFail(error.message))
         } else {
+             console.log('not cancel', error);
             dispatch(getCharactersFail(error.message))
         }
       });

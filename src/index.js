@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import authReducer from "./store/reducers/auth";
@@ -12,10 +13,10 @@ import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  selection: selectionReducer
+  selection: selectionReducer,
+  choices: choicesReducer
 });
 
-console.log(rootReducer);
 const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -25,11 +26,13 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-console.log(store);
+console.log(store.getState());
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );

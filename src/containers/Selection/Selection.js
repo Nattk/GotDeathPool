@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 import Classes from './Selection.css';
 import Checkbox from '../../components/Checkboxes/Checkbox';
@@ -10,10 +11,10 @@ import * as actionCreators from '../../store/actions/index';
 
 class Selection extends Component {
 
-    componentWillMount(){
-        console.log(this.props.isLoaded);
-        console.log(this.props.userId);
-        this.props.onLoadCharacter(this.props.userId, this.props.token)
+    componentDidMount(){
+        this.props.onLoadCharacter(this.props.userId, this.props.token);
+        console.log(this.props.characters);
+
         // const localUser = localStorage.getItem('userId');
         // const localUserToken = localStorage.getItem('token');
         // const CancelToken = axios.CancelToken;
@@ -64,7 +65,8 @@ class Selection extends Component {
 
     render(){
         let selection = null;
-        if(this.props.isLoaded){
+        if(!this.props.isLoaded){
+            console.log('la', this.props.isLoaded);
             selection = (
                <Aux> 
                     {this.props.characters.map((char,index) =>(
@@ -119,4 +121,4 @@ const mapDispacthToProps = dispatch => {
 
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(Selection);
+export default withRouter(connect(mapStateToProps, mapDispacthToProps)(Selection));

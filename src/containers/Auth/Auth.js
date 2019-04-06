@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Classes from "./Auth.css";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
-import { Redirect } from 'react-router-dom';
+import { withRouter, Redirect, Link} from 'react-router-dom';
 import Aux from "../../HOC/Auxiliary/Auxiliary";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
@@ -17,8 +17,7 @@ class Auth extends Component {
     signUp: false
   };
 
-  componentDidMount(){
-    console.log(this.props.selection);
+  componentWillMount(){
   }
 
   signHandler = () => {
@@ -79,7 +78,7 @@ class Auth extends Component {
     if (this.state.emailValid && this.state.passwordValid) {
       valid = true;
     }
-    
+
     if (this.props.error) {
       errorMessage = <p>{this.props.error}</p>;
     }
@@ -128,11 +127,19 @@ class Auth extends Component {
               />{" "}
             </p>
           )}
+          <Link to='/selection'>Selection</Link>
         </section>
       );
     }
+    
+    if (this.props.isAuthenticated) {
+      console.log('auth');
+      form = <Redirect to='/selection' />;
+    }
+
     return (
       <Aux>
+          {errorMessage}
           {form}
       </Aux>
     );
@@ -140,11 +147,14 @@ class Auth extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log('mapStateProps');
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    token: state.auth.token,
     isAuthenticated: state.auth.token !== null,
-    selection : state.selection.char_error
+    selection : state.selection.char_error,
+    authRedirectPath: state.auth.authRedirectPath
   };
 };
 
@@ -156,7 +166,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Auth);
+)(Auth));

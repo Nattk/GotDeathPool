@@ -13,7 +13,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.AUTH_START:
       return { ...state, error: null, loading: true };
     case actionTypes.AUTH_SUCCESS:
-    console.log(action.userId);
+      console.log('success');
       return { ...state, token: action.token, userId: action.userId, loading: false};
     case actionTypes.AUTH_FAIL:
       return { ...state, error: action.error, loading: false };

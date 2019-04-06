@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionType";
 
 const initialState = {
   characters: {},
-  loading: false,
+  loading: true,
   char_error: null
 };
 
@@ -11,6 +11,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_CHARACTERS_START:
       return { ...state, loading: true };
     case actionTypes.GET_CHARACTERS_SUCCESS:
+      console.log(state);
       return { ...state, characters: action.characters, loading: false };
     case actionTypes.GET_CHARACTERS_FAIL:
       return { ...state, char_error: action.error, loading: false };
