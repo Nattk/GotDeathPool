@@ -3,6 +3,7 @@ import Classes from './Choices.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
+import { connect } from 'react-redux';
 
 class Choices extends Component {
     state = {
@@ -77,4 +78,4 @@ class Choices extends Component {
     }
 }
 
-export default Choices;
+export default connect()(Choices);
