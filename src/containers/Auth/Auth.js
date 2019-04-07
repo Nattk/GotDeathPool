@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Classes from "./Auth.css";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
-import { withRouter, Redirect, Link} from 'react-router-dom';
+import { withRouter, Redirect } from "react-router-dom";
 import Aux from "../../HOC/Auxiliary/Auxiliary";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Auth extends Component {
   state = {
@@ -17,8 +17,7 @@ class Auth extends Component {
     signUp: false
   };
 
-  componentWillMount(){
-  }
+  componentWillMount() {}
 
   signHandler = () => {
     this.setState(prevState => {
@@ -130,15 +129,15 @@ class Auth extends Component {
         </section>
       );
     }
-    
-    if (this.props.isAuthenticated && this.props.authRedirectPath !== '/') {
-      form = <Redirect to={this.props.authRedirectPath}/>
+
+    if (this.props.isAuthenticated && this.props.authRedirectPath !== "/") {
+      form = <Redirect to={this.props.authRedirectPath} />;
     }
 
     return (
       <Aux>
-          {errorMessage}
-          {form}
+        {errorMessage}
+        {form}
       </Aux>
     );
   }
@@ -151,7 +150,7 @@ const mapStateToProps = state => {
     userId: state.auth.userId,
     token: state.auth.token,
     isAuthenticated: state.auth.token !== null,
-    selection : state.selection.char_error,
+    selection: state.selection.char_error,
     authRedirectPath: state.auth.authRedirectPath
   };
 };
@@ -160,12 +159,16 @@ const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignUp) =>
       dispatch(actionCreators.auth(email, password, isSignUp)),
-    onSetAuthRedirectPath: () => dispatch(actionCreators.setAuthRedirect("/selection")),
-    onAuthAdminCheck: (userId, token) => dispatch(actionCreators.checkIfAdmin(userId, token))
+    onSetAuthRedirectPath: () =>
+      dispatch(actionCreators.setAuthRedirect("/selection")),
+    onAuthAdminCheck: (userId, token) =>
+      dispatch(actionCreators.checkIfAdmin(userId, token))
   };
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Auth));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Auth)
+);

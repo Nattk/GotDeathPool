@@ -1,28 +1,28 @@
-.Choices{
-    width:80%;
-    display: flex;
-    flex-direction: column;
+.Choices {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
 }
 
-.Titles{
-    color: white;
-    background-color: darkslategrey;
-    display: flex;
-    flex-direction: row;
-} 
-.Titles p{
-    width:33%;
-    text-align: center;
+.Titles {
+  color: white;
+  background-color: darkslategrey;
+  display: flex;
+  flex-direction: row;
 }
-.Characters{
-    display: flex;
-    flex-direction: row;  
+.Titles p {
+  width: 33%;
+  text-align: center;
 }
-.Characters p{
-    width:33%;
-    text-align: center;
+.Characters {
+  display: flex;
+  flex-direction: row;
+}
+.Characters p {
+  width: 33%;
+  text-align: center;
 }
 
-.Choices .Titles:nth-of-type(2) p{
-    width:50%;
+.Choices .Titles:nth-of-type(2) p {
+  width: 50%;
 }

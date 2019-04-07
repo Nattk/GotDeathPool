@@ -19,14 +19,14 @@ const reducer = (state = initialState, action) => {
       return { ...state, postSuccess: true, loading: false };
     case actionTypes.UPDATE_CHARACTER_STATUS:
       let character = [...state.characters];
-      character = character.map((item,index)=>{
-        if(index === action.index){
-          item = {...item, status:action.status}
+      character = character.map((item, index) => {
+        if (index === action.index) {
+          item = { ...item, status: action.status };
           return item;
         }
         return item;
-      })
-    return {...state,characters:character};
+      });
+      return { ...state, characters: character };
     case actionTypes.POST_USER_CHOICES_START:
       return { ...state, loading: true };
     case actionTypes.POST_USER_CHOICES_SUCCESS:

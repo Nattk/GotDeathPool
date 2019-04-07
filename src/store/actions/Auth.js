@@ -98,7 +98,6 @@ export const auth = (email, password, signUp) => {
 
 export const checkIfAdmin = (userId, token) => {
   return dispatch => {
-    console.log("d");
     axios
       .get(
         "https://gotpool-83470.firebaseio.com/Admin/userId.json?auth=" + token

@@ -21,7 +21,7 @@ export const getBackCharactersFail = error => {
   };
 };
 
-export const patchCharacterStatusSuccess = (response) => {
+export const patchCharacterStatusSuccess = response => {
   return {
     type: actionTypes.PATCH_CHARACTER_STATUS_SUCCESS,
     response: response
@@ -29,17 +29,16 @@ export const patchCharacterStatusSuccess = (response) => {
 };
 
 export const patchCharacterStatusStart = () => {
-    return {
-      type: actionTypes.PATCH_CHARACTER_STATUS_START,
-    };
+  return {
+    type: actionTypes.PATCH_CHARACTER_STATUS_START
   };
+};
 
-  export const patchCharacterStatusFail = () => {
-    return {
-      type: actionTypes.PATCH_CHARACTER_STATUS_FAIL,
-    };
+export const patchCharacterStatusFail = () => {
+  return {
+    type: actionTypes.PATCH_CHARACTER_STATUS_FAIL
   };
-
+};
 
 export const getBackCharacters = token => {
   return dispatch => {
@@ -48,7 +47,7 @@ export const getBackCharacters = token => {
     axios
       .get("https://gotpool-83470.firebaseio.com/characters.json?auth=" + token)
       .then(char => {
-          console.log(char);
+        console.log(char);
         dispatch(getBackCharactersSuccess(char.data));
       })
       .catch(error => {
@@ -57,15 +56,23 @@ export const getBackCharacters = token => {
   };
 };
 
-export const patchCharacterStatus = (index,status,token) => {
-    return dispatch =>{
-        dispatch(patchCharacterStatusStart());
-        const data = {"status":status};
-        axios.patch('https://gotpool-83470.firebaseio.com/characters/'+index+'/.json?auth='+token, data).then(response =>{
-            dispatch(patchCharacterStatusSuccess(response));
-        }).catch(error=>{
-            dispatch(patchCharacterStatusFail(error.message))
-        })
-    }
-
-}
+export const patchCharacterStatus = (index, status, token) => {
+  return dispatch => {
+    dispatch(patchCharacterStatusStart());
+    const data = { status: status };
+    axios
+      .patch(
+        "https://gotpool-83470.firebaseio.com/characters/" +
+          index +
+          "/.json?auth=" +
+          token,
+        data
+      )
+      .then(response => {
+        dispatch(patchCharacterStatusSuccess(response));
+      })
+      .catch(error => {
+        dispatch(patchCharacterStatusFail(error.message));
+      });
+  };
+};

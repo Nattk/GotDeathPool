@@ -12,7 +12,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_USER_CHOICES_START:
       return { ...state, loading: true };
     case actionTypes.GET_USER_CHOICES_SUCCESS:
-      return { ...state, choices: action.choices, characters: action.characters, loading: false };
+      return {
+        ...state,
+        choices: action.choices,
+        characters: action.characters,
+        loading: false
+      };
     case actionTypes.GET_USER_CHOICES_FAIL:
       return { ...state, error: action.error, loading: false };
     default:

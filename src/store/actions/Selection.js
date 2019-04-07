@@ -38,8 +38,6 @@ export const updateCharacterStatus = (index, status) => {
 export const getCharacters = (userId, token) => {
   return dispatch => {
     dispatch(getCharactersStart());
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
     axios
       .get(
         "https://gotpool-83470.firebaseio.com/users/" +
@@ -61,9 +59,8 @@ export const getCharacters = (userId, token) => {
         dispatch(getCharactersSuccess(char.data));
       })
       .catch(error => {
-          console.log(error);
-          dispatch(getCharactersFail(error.message));
-
+        console.log(error);
+        dispatch(getCharactersFail(error.message));
       });
   };
 };
@@ -92,7 +89,6 @@ export const postUserChoice = (userChoices, userId, token) => {
   return dispatch => {
     dispatch(postUserChoicesStart());
     const payload = { choices: userChoices, choice: true };
-    console.log(token);
     axios
       .patch(
         "https://gotpool-83470.firebaseio.com/users/" +

@@ -1,14 +1,14 @@
 .SignIn p {
-    width:100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .Form {
-    display: flex;
-    flex-direction: column;   
+  display: flex;
+  flex-direction: column;
 }
 
 .Form input {
-    margin:10px 0 10px 0;
-    padding: 5px;   
+  margin: 10px 0 10px 0;
+  padding: 5px;
 }

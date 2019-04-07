@@ -1,21 +1,21 @@
-.Checkbox{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+.Checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .Checkbox p {
-    width: 45%;
+  width: 45%;
 }
 
-.inputBox{
-    display: flex;
-    flex-direction: row;
-    align-items: center;  
-    width:45%;
+.inputBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 45%;
 }
 
-.inputBox input{
-    width:33%;
+.inputBox input {
+  width: 33%;
 }

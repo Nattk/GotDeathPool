@@ -1,10 +1,10 @@
-.Header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding:0 10px 0 10px;
-    height: 50px;
-    background-color: dimgray;
-    color: white;
+.Header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 10px;
+  height: 50px;
+  background-color: dimgray;
+  color: white;
 }
