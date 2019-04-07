@@ -1,9 +1,10 @@
 import * as actionTypes from "../actions/actionType";
 
 const initialState = {
-  characters: {},
-  loading: true,
-  char_error: null
+  characters: [],
+  loading: false,
+  char_error: null,
+  post_success: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,25 +12,25 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_CHARACTERS_START:
       return { ...state, loading: true };
     case actionTypes.GET_CHARACTERS_SUCCESS:
-      console.log(state);
       return { ...state, characters: action.characters, loading: false };
     case actionTypes.GET_CHARACTERS_FAIL:
       return { ...state, char_error: action.error, loading: false };
+    case actionTypes.CHOICES_DONE:
+      return { ...state, postSuccess: true, loading: false };
     case actionTypes.UPDATE_CHARACTER_STATUS:
-      return {
-        ...state,
-        characters: {
-          ...state.characters,
-          [action.index]: {
-            ...state.characters[action.index],
-            status: action.status
-          }
+      let character = [...state.characters];
+      character = character.map((item,index)=>{
+        if(index === action.index){
+          item = {...item, status:action.status}
+          return item;
         }
-      };
+        return item;
+      })
+    return {...state,characters:character};
     case actionTypes.POST_USER_CHOICES_START:
       return { ...state, loading: true };
     case actionTypes.POST_USER_CHOICES_SUCCESS:
-      return { ...state, loading: true };
+      return { ...state, loading: false, postSuccess: true };
     case actionTypes.POST_USER_CHOICES_FAIL:
       return { ...state, loading: false };
     default:

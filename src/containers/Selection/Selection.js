@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 import Classes from './Selection.css';
 import Checkbox from '../../components/Checkboxes/Checkbox';
@@ -50,7 +50,8 @@ class Selection extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onPatchUserChoices(this.props.userId,this.props.token);
+        this.props.onPatchUserChoices(this.props.characters, this.props.userId, this.props.token);
+
         // const localUserToken = localStorage.getItem('token');
         // const userChoices = this.state.characters;
         // const userId = localStorage.getItem('userId');
@@ -65,6 +66,7 @@ class Selection extends Component {
 
     render(){
         let selection = null;
+
         if(!this.props.isLoaded){
             console.log('la', this.props.isLoaded);
             selection = (
@@ -79,6 +81,10 @@ class Selection extends Component {
         }
         else{
            selection = <Spinner/>
+        }
+
+        if(this.props.postSuccess){
+            selection = <Redirect to="/choices"/>
         }
 
         return(
@@ -108,7 +114,8 @@ const mapStateToProps = state => {
         isLoaded: state.selection.loading,
         error: state.selection.error,
         token: state.auth.token,
-        userId: state.auth.userId
+        userId: state.auth.userId,
+        postSuccess: state.selection.postSuccess
     }
 }
 
@@ -116,7 +123,7 @@ const mapDispacthToProps = dispatch => {
     return{
         onLoadCharacter : (userId, token) => dispatch(actionCreators.getCharacters(userId, token)),
         onChangeCharacterStatus : (index, status) => dispatch(actionCreators.updateCharacterStatus(index, status)),
-        onPatchUserChoices : (userId, token) => dispatch(actionCreators.postUserChoice(userId, token))
+        onPatchUserChoices : (userChoices, userId, token) => dispatch(actionCreators.postUserChoice(userChoices, userId, token))
     }
 
 }

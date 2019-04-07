@@ -3,7 +3,9 @@ import Classes from './Choices.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
+import * as actionCreators from '../../store/actions/index';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class Choices extends Component {
     state = {
@@ -11,26 +13,27 @@ class Choices extends Component {
         choices:{},
         isLoaded : false
     }
-    componentWillMount(){
-        const id = localStorage.getItem('userId');
-        const localUserToken =  localStorage.getItem('token');
-        axios.get('https://gotpool-83470.firebaseio.com/users/'+id+'/choices.json?auth='+localUserToken)
-        .then(choices =>{
-            this.setState({choices : choices.data});
-            return axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken)
-        })
-        .then((characters)=>{
-            this.setState({characters : characters.data, isLoaded: true});
+    componentDidMount(){
+        this.props.onGetUserChoices(this.props.userId, this.props.token);
+        // const id = localStorage.getItem('userId');
+        // const localUserToken =  localStorage.getItem('token');
+        // axios.get('https://gotpool-83470.firebaseio.com/users/'+id+'/choices.json?auth='+localUserToken)
+        // .then(choices =>{
+        //     this.setState({choices : choices.data});
+        //     return axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken)
+        // })
+        // .then((characters)=>{
+        //     this.setState({characters : characters.data, isLoaded: true});
     
-        }).catch(error=>{
-            alert(error.message);
-        })
+        // }).catch(error=>{
+        //     alert(error.message);
+        // })
     }
 
     updatePoints = () =>{
         let result = 0;
-        this.state.characters.forEach((char, index) => {
-            if(char.status === this.state.choices[index].status){
+        this.props.characters.forEach((char, index) => {
+            if(char.status === this.props.choices[index].status){
                 result = result+3;
             }
         });
@@ -40,14 +43,14 @@ class Choices extends Component {
     render(){
         let choices = null;
         let points = null;
-        if(this.state.isLoaded){
+        if(this.props.isLoaded){
             choices = (
                 <div >
-                    {this.state.choices.map((choices,index) =>(
+                    {this.props.choices.map((choices,index) =>(
                         <div className={Classes.Characters} key={choices.id}>
                             <p>{choices.name}</p>
                             <p>{choices.status}</p>
-                            <p>{this.state.characters[index].status}</p>
+                            <p>{this.props.characters[index].status}</p>
                         </div>
                     ))}
                 </div>
@@ -78,4 +81,21 @@ class Choices extends Component {
     }
 }
 
-export default connect()(Choices);
+const mapStateToProps = state =>{
+    return {
+        userId: state.auth.userId,
+        token: state.auth.token,
+        choices: state.choices.choices,
+        characters: state.choices.characters,
+        isLoaded: state.choices.loading,
+        error: state.choices.error
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        onGetUserChoices : (userId,token) => dispatch(actionCreators.getUserChoices(userId,token))
+    }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Choices));
