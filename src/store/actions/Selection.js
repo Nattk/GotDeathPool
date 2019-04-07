@@ -50,7 +50,7 @@ export const getCharacters = (userId, token) => {
       .then(choice => {
         console.log(choice);
         if (choice.data.choice) {
-          cancel('canceled');
+          dispatch(choicesDone());
         } else {
           return axios.get(
             "https://gotpool-83470.firebaseio.com/characters.json?auth=" + token

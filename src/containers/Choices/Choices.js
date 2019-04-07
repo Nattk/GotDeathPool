@@ -43,7 +43,7 @@ class Choices extends Component {
     render(){
         let choices = null;
         let points = null;
-        if(this.props.isLoaded){
+        if(!this.props.isLoaded){
             choices = (
                 <div >
                     {this.props.choices.map((choices,index) =>(
