@@ -4,57 +4,52 @@ import Classes from './BackOffice.css';
 import Aux from '../../HOC/Auxiliary/Auxiliary';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as actionsCreators from '../../store/actions/index';
 
 class BackOffice extends Component {
-    state = {
-        characters:{},
-        index : null,
-        status: null,
-        isLoaded:false
-    }
+        state = {
+            index:null,
+            status:null,
+            disabled:false,
+        }
     
     componentDidMount(){
-        const localUserToken = localStorage.getItem('token');
-        axios.get('https://gotpool-83470.firebaseio.com/characters.json?auth='+localUserToken).then(char =>{
-            this.setState({characters: char.data});    
-            this.setState({isLoaded: true});
-        }).catch(error=>{   
-            console.log('error');
-        });
+        this.props.onLoadCharacters(this.props.token);
     }
 
     nameChange = event =>{
-        this.setState({index:event.target.value});
-        console.log(this.state.index);
+        this.setState({index:event.target.value},()=>{
+            this.disabledButton();
+        });
     }
 
     statusChange = event =>{
-        this.setState({status:event.target.value}) ;
+        this.setState({status:event.target.value}, ()=>{
+            this.disabledButton();
+        });
+    }
+    
+    disabledButton = () =>{
+        if(this.state.index !== null && this.state.index !=='default' && this.state.status !== null && this.state.status !== 'default'){
+            this.setState({disabled: true})
+        }       
     }
 
-
     submitCharacter = event => {
-        event.preventDefault();
-        const index = this.state.index ;
-        const status = this.state.status;
-        const localUserToken =  localStorage.getItem('token');
-        console.log(status,index);
-        const data = {"status":status};
-        axios.patch('https://gotpool-83470.firebaseio.com/characters/'+index+'/.json?auth='+localUserToken, data).then(response =>{
-            console.log(response);
-        }).catch(error=>{
-            console.log(error);
-        })
+         event.preventDefault();
+        this.props.onChangeStatus(this.state.index,this.state.status,this.props.token);
     }
 
     render(){
         let backInput = null;
-        if(this.state.isLoaded){
+        if(!this.props.isLoaded){
             backInput = (
                 <form>
                 <select defaultValue='default' onChange={(event)=>this.nameChange(event)}>
                     <option value='default'>Choose the character </option>
-                    {this.state.characters.map((char,index) => (
+                    {this.props.characters.map((char,index) => (
                         <option key={char.id} value={index}>{char.name}</option>
                     ))}
                 </select>
@@ -64,7 +59,7 @@ class BackOffice extends Component {
                     <option value="Dead">Dead</option>
                     <option value="Wight">Wight</option>
                 </select>
-                <Button name="Submit" clicked={event=>this.submitCharacter(event)}/>
+                <Button name="Submit" disabled={this.state.disabled}  clicked={event=>this.submitCharacter(event)}/>
             </form>
 
             );
@@ -81,4 +76,19 @@ class BackOffice extends Component {
         )
     }
 }
-export default BackOffice;
+
+const mapStateToProps = state =>{
+    return{
+        characters: state.back.characters,
+        isLoaded: state.back.loading,
+        token: state.auth.token
+    }
+}
+
+const mapDispacthToProps = dispatch =>{
+    return {
+        onLoadCharacters : (token) => dispatch(actionsCreators.getBackCharacters(token)),
+        onChangeStatus : (index,status,token) => dispatch(actionsCreators.patchCharacterStatus(index,status,token)) 
+    }
+}
+export default withRouter(connect(mapStateToProps, mapDispacthToProps)(BackOffice));

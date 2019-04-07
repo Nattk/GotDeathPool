@@ -127,14 +127,12 @@ class Auth extends Component {
               />{" "}
             </p>
           )}
-          <Link to='/selection'>Selection</Link>
         </section>
       );
     }
     
-    if (this.props.isAuthenticated) {
-      console.log('auth');
-      form = <Redirect to='/selection' />;
+    if (this.props.isAuthenticated && this.props.authRedirectPath !== '/') {
+      form = <Redirect to={this.props.authRedirectPath}/>
     }
 
     return (
@@ -150,6 +148,7 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    userId: state.auth.userId,
     token: state.auth.token,
     isAuthenticated: state.auth.token !== null,
     selection : state.selection.char_error,
@@ -161,7 +160,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignUp) =>
       dispatch(actionCreators.auth(email, password, isSignUp)),
-    onSetAuthRedirectPath: () => dispatch(actionCreators.setAuthRedirect("/selection"))
+    onSetAuthRedirectPath: () => dispatch(actionCreators.setAuthRedirect("/selection")),
+    onAuthAdminCheck: (userId, token) => dispatch(actionCreators.checkIfAdmin(userId, token))
   };
 };
 

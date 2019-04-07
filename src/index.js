@@ -9,12 +9,14 @@ import { Provider } from "react-redux";
 import authReducer from "./store/reducers/auth";
 import choicesReducer from "./store/reducers/choices";
 import selectionReducer from "./store/reducers/selection";
+import backReducer from "./store/reducers/back";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   selection: selectionReducer,
-  choices: choicesReducer
+  choices: choicesReducer,
+  back: backReducer
 });
 
 const composeEnhancers =
